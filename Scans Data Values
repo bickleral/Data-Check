@@ -1,0 +1,78 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef union integer {
+  char c;
+  short s;
+  int i;
+}integer;
+
+void displayBits(int value) {
+  int s = 8*sizeof(int);
+  char str[s+3];
+  int bits = 0;
+  for(int i = s+2;i >= 0;i--) {
+    if(bits == 8) 
+      str[i] = ' ',bits = 0,i--;
+    str[i] = (value&1)+'0';
+    bits++;
+    value>>=1;
+  }
+  printf("%s\n",str);
+}
+
+int main(int argc, char const *argv[]) {
+  integer integer1,integer2,integer3;
+  memset(&integer1,255,sizeof(integer));
+  memset(&integer2,255,sizeof(integer));
+  memset(&integer3,255,sizeof(integer));
+  integer2.s = 10;
+  integer3.i = 1000000;
+  printf("---------- Integer 1 Info ----------\n");
+  printf("Initial binary value: ");
+  int tempValue;
+  memcpy(&tempValue,&integer1,sizeof(integer));
+  displayBits(tempValue);
+  printf("Enter data for type char: ");
+  char ch;
+  scanf("%c",&ch);
+  integer1.c = ch;
+  printf("Breakdown of the element in the union\n");
+  printf("char  [%c]\nshort [%hd]\nint   [%d]\n", integer1.c,integer1.s,integer1.i);
+  printf("Breakdown in hex\n");
+  printf("char  [%x]\nshort [%x]\nint   [%x]\n", integer1.c,integer1.s,integer1.i);
+  memcpy(&tempValue,&integer1,sizeof(integer));
+  displayBits(tempValue);
+
+  printf("---------- Integer 2 Info ----------\n");
+  printf("Initial binary value: ");
+  memcpy(&tempValue,&integer2,sizeof(integer));
+  displayBits(tempValue);
+  printf("Enter data for type short: ");
+  short s;
+  scanf("%hd",&s);
+  integer2.s = s;
+  printf("Breakdown of the element in the union\n");
+  printf("char  [%c]\nshort [%hd]\nint   [%d]\n", integer2.c,integer2.s,integer2.i);
+  printf("Breakdown in hex\n");
+  printf("char  [%x]\nshort [%x]\nint   [%x]\n", integer2.c,integer2.s,integer2.i);
+  memcpy(&tempValue,&integer2,sizeof(integer));
+  displayBits(tempValue);
+
+  printf("---------- Integer 3 Info ----------\n");
+  printf("Initial binary value: ");
+  memcpy(&tempValue,&integer3,sizeof(integer));
+  displayBits(tempValue);
+  printf("Enter data for type int: ");
+  int i;
+  scanf("%d",&i);
+  integer3.i = i;
+  printf("Breakdown of the element in the union\n");
+  printf("char  [%c]\nshort [%hd]\nint   [%d]\n", integer3.c,integer3.s,integer3.i);
+  printf("Breakdown in hex\n");
+  printf("char  [%x]\nshort [%x]\nint   [%x]\n", integer3.c,integer3.s,integer3.i);
+  memcpy(&tempValue,&integer3,sizeof(integer));
+  displayBits(tempValue);
+  return 0;
+}
